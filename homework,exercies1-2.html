@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" height="500", width="600">
+</canvas>
+
+
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    const rand = function(num) {
+        return Math.floor(Math.random() * num) ;
+    };
+    const colorArray = ["green", "red", "purple", "black"];
+    const boxcreator = function (count,canvasWidth,canvasHeight) {
+        const arr = [];
+
+        for (let i = 0; i<count; i++){
+
+            const obj = {
+                width:40,
+                height:40,
+                x:rand(canvasWidth - 40),
+                y:rand(canvasHeight - 40),
+                xDelta:5,
+                yDelta:5,
+
+                color:colorArray[rand(colorArray.length) - 1],
+                draw: function () {
+                    context.fillStyle = this.color;
+                    context.fillRect(this.x, this.y, this.width, this.height);
+                },
+                update: function () {
+                    this.x += this.xDelta; //0
+                    this.y += this.yDelta;//width
+                    if (this.x + this.width>= canvasWidth || this.x <=0){this.xDelta = -1*(this.xDelta)}
+                    if (this.y <= 0 || this.y + this.height >= canvasHeight) {this.yDelta = -1*(this.yDelta)}
+
+
+                }};
+            arr[i]= obj;
+        }
+        return arr;
+    };
+
+    let countObj = boxcreator(10,canvas.width,canvas.height);
+    const draw = function () {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < countObj.length; i++ ) {
+
+            countObj[i].draw();
+
+        }
+    }
+    const update = function () {
+        for (let i=0; i < countObj.length; i++){
+            countObj[i].update();
+        }
+    }
+    const animate = function () {
+        requestAnimationFrame(animate);
+
+        draw();
+        update();
+    }
+    animate();
+
+    ///3
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
